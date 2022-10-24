@@ -20,11 +20,11 @@ Branch dapat sesuai dengan kebutuhan dan kesepakatan bersama dalam pair, namun h
 
 ## Task
 ### Desain MUI
-- [ ] Login
-- [ ] Register
-- [ ] Home / List Musics
-- [ ] Detail Musics (Lyric)
-- [ ] Form Searcing
+- [x] Login
+- [x] Register
+- [x] Home / List Musics
+- [x] Detail Musics (Lyric)
+- [x] Form Searcing
 
 ### Fetch Data & Action
 - [x] Fetch data API (Zustand)
