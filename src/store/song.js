@@ -14,8 +14,8 @@ const useSongStore = create(
       lyrics: initialLyrics,
       featuredSongs: initialFeaturedSongs,
       searchSongs: initialSearchSongs,
-      fetchFeaturedSongs: async (name, id) => {
-        const { data: axiosData } = await axios.get(`${BASE_URL}result/?query=https://www.jiosaavn.com/featured/${name}/${id}`);
+      fetchFeaturedSongs: async (pathname) => {
+        const { data: axiosData } = await axios.get(`${BASE_URL}result/?query=https://www.jiosaavn.com${pathname}`);
 
         set(produce((state) => {
           state.featuredSongs = axiosData;

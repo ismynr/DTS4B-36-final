@@ -18,7 +18,9 @@ import {
   Typography,
   TableContainer,
   LinearProgress,
-  Link
+  Link,
+  Stack,
+  CircularProgress
 } from '@mui/material';
 // components
 import Scrollbar from '../components/scrollbar';
@@ -36,8 +38,9 @@ import useSongStore, {
 
 const TABLE_HEAD = [
   { id: 'number', label: '#', alignRight: false },
+  { id: 'image', label: 'Image', alignRight: false },
   { id: 'songTitle', label: 'Title', alignRight: false },
-  { id: 'songDuration', label: 'Duration', alignRight: false },
+  { id: 'songDuration', label: 'Duration)', alignRight: false },
   { id: 'lyric', label: 'Lyric', alignRight: false },
   { id: 'media_url', label: 'Url', alignRight: false },
 ];
@@ -93,21 +96,21 @@ export default function UserPage() {
   let numberSongs = 0;
 
   useEffect(() => {
-    fetchFeaturedSongs(params?.name, params?.id);
+    fetchFeaturedSongs(window.location.pathname);
   }, []);
 
   // handling APIs is not ready
   if (featuredSongs.length < 1) {
     console.log(`ga adadata`);
     return (
-      <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+      <Stack alignItems="center"><CircularProgress  /></Stack>
     );
   } else {
     console.log(featuredSongs);
     if (featuredSongs.error) {
       console.log(featuredSongs.error);
       return (
-        <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+        <Stack alignItems="center"><CircularProgress  /></Stack>
       );
     } else {
       console.log('gaeror');
@@ -116,7 +119,7 @@ export default function UserPage() {
       const splitLocationName = window.location.pathname.split('/');
       if (splitPremaUrl[3] !== splitLocationName[3]) {
         return (
-          <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+          <Stack alignItems="center"><CircularProgress  /></Stack>
         );
       }
     }
@@ -126,7 +129,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> {featuredSongs.listname} </title>
+        <title> {featuredSongs.listname ?? featuredSongs.name} </title>
       </Helmet>
 
       <Container>
@@ -135,16 +138,19 @@ export default function UserPage() {
     <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image={featuredSongs.image}
+        image={featuredSongs.image ?? 'https://i.pinimg.com/originals/16/bf/a1/16bfa1d4494404173e8d25ae0e108884.jpg'}
         alt="album cover"
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'  }}>
         <CardContent sx={{ flex: '1 0 auto',}}>
           <Typography component="div" variant="h5">
-          {featuredSongs.listname}
+          {featuredSongs.listname ?? featuredSongs.name}
           </Typography>
           <Typography component="div" variant="h7">
-          {featuredSongs.firstnam}
+          {featuredSongs.firstname ?? featuredSongs.year}
+          </Typography>
+          <Typography component="div" variant="h7">
+          {featuredSongs.firstname ? 'Playlist':'Album'}
           </Typography>
         </CardContent>
       </Box>
@@ -161,15 +167,24 @@ export default function UserPage() {
                 <TableBody>
                   
                   {featuredSongs.songs.slice().map((row) => {
-                    const { music_id, song, duration, media_url, perma_url } = row;
+                    const { music_id, song, duration, media_url, perma_url, image } = row;
                     const newPremaUrl = perma_url.replace('https://www.jiosaavn.com', '');
                     numberSongs++;
 
                     return (
+                      
                       <TableRow hover key={music_id} tabIndex={-1}>
                       <TableCell align="left">{numberSongs}</TableCell>
+                      <TableCell align="left">
+                      <CardMedia
+                        component="img"
+                        sx={{ width: 100 }}
+                        image={image ?? 'https://i.pinimg.com/originals/16/bf/a1/16bfa1d4494404173e8d25ae0e108884.jpg'}
+                        alt="album cover"
+                      />
+                      </TableCell>
                       <TableCell align="left">{song}</TableCell>
-                      <TableCell align="left">{duration}</TableCell>
+                      <TableCell align="left">{ (duration / 60).toFixed(2) }</TableCell>
                       <TableCell align="left">
                         <Button to={newPremaUrl} size="medium" variant="text" component={RouterLink}>
                           Lyric

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
-import { LinearProgress, Box } from '@mui/material';
+import { Stack, CircularProgress } from '@mui/material';
 
 const ProtectedRoute = ({ children, loginOnly = true }) => {
   const [user, loading] = useAuthState(auth);
@@ -19,7 +19,7 @@ const ProtectedRoute = ({ children, loginOnly = true }) => {
 
   }, [user, loading])
 
-  return loading ? <Box sx={{ width: '100%' }}><LinearProgress /></Box> : children;
+  return loading ? <Stack alignItems="center"><CircularProgress  /></Stack> : children;
 };
 
 export default ProtectedRoute;

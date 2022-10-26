@@ -17,8 +17,8 @@ import {
   TableCell,
   Container,
   Typography,
-  TableContainer,
-  LinearProgress
+  CircularProgress,
+  Stack
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import useSongStore, { 
@@ -42,7 +42,7 @@ export default function UserPage() {
   // handling APIs is not ready
   if (!lyricSongs) {
     return (
-      <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+      <Stack alignItems="center"><CircularProgress  /></Stack>
     );
   } else {
     const newPremaUrlSplit = lyricSongs.perma_url.replace('https://www.jiosaavn.com', '');
@@ -50,7 +50,7 @@ export default function UserPage() {
     const splitLocationName = window.location.pathname.split('/');
     if (splitPremaUrl[3] !== splitLocationName[3]) {
       return (
-        <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+        <Stack alignItems="center"><CircularProgress  /></Stack>
       );
     }
   }
@@ -68,7 +68,7 @@ export default function UserPage() {
     <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image={lyricSongs.image}
+        image={lyricSongs.image ?? 'https://i.pinimg.com/originals/16/bf/a1/16bfa1d4494404173e8d25ae0e108884.jpg'}
         alt="album cover"
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -88,9 +88,12 @@ export default function UserPage() {
       
     </Card>
         <Card>
-            <Box sx={{ m:1, }}>
+            <Box sx={{ m:5, }}>
                 <Text variant="h7" >
-                  <div style={{margin: "3em 3em 3em 3em"}} dangerouslySetInnerHTML={{ __html: lyricSongs.lyrics }} />
+                  {lyricSongs.lyrics 
+                  ? <div dangerouslySetInnerHTML={{ __html: lyricSongs.lyrics }} />
+                  :  'There is no Lyrics'}
+                  
                 </Text>
             </Box>
         </Card>

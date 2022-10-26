@@ -29,9 +29,10 @@ export default function SimpleLayout() {
         <Box sx={{ mt:-2, display: 'flex', position: 'relative', alignItems: 'right',justifyContent: 'right', }}>
         <AccountPopover />
         </Box>
+        <Outlet />
       </StyledHeader>
 
-      <Outlet />
+      
     </>
   );
 }

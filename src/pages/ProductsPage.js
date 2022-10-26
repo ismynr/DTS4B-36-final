@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Card, Container, Stack, Typography, OutlinedInput, InputAdornment, Button, LinearProgress } from '@mui/material';
+import { Box, Card, Container, Stack, Typography, OutlinedInput, InputAdornment, Button, CircularProgress } from '@mui/material';
 // components
 import { ProductSort, ProductList } from '../sections/products';
 import Iconify from '../components/iconify';
@@ -83,7 +83,7 @@ export default function AlbumsPage() {
   // handling APIs is not ready
   if (!chart || !newRelease || !featuredPlaylist || !searchSong) {
     return (
-      <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+      <Stack alignItems="center"><CircularProgress  /></Stack>
     );
   }
 
