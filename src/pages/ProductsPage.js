@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Card, Container, Stack, Typography, OutlinedInput, InputAdornment, Button } from '@mui/material';
+import { Box, Card, Container, Stack, Typography, OutlinedInput, InputAdornment, Button, LinearProgress } from '@mui/material';
 // components
 import { ProductSort, ProductList } from '../sections/products';
 import Iconify from '../components/iconify';
@@ -54,7 +54,6 @@ export default function AlbumsPage() {
   const featuredPlaylist = useFeaturedStore(selectFeaturedPlaylist);
   const fetchFeaturedPlaylist = useFeaturedStore(selectFetchFeaturedPlaylist);
 
-  let searchSongTemp = [];
   const searchSong = useSongStore(selectSearchSongs);
   const fetchSearchSong = useSongStore(selectFetchSearchSongs);
 
@@ -67,7 +66,6 @@ export default function AlbumsPage() {
 
   const handleChange = (event) => {
     if (event.target.value.length >= 3) {
-      console.log(event.target.value);
       fetchSearchSong(event.target.value);
     }
   }
@@ -80,6 +78,13 @@ export default function AlbumsPage() {
         </p>
       );
     }
+  }
+
+  // handling APIs is not ready
+  if (!chart || !newRelease || !featuredPlaylist || !searchSong) {
+    return (
+      <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+    );
   }
 
   return (

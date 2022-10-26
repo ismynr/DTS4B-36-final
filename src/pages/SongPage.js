@@ -18,6 +18,7 @@ import {
   Container,
   Typography,
   TableContainer,
+  LinearProgress
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import useSongStore, { 
@@ -30,12 +31,29 @@ import { useNavigate} from "react-router-dom";
 export default function UserPage() {
   let params = useParams();
   let navigate = useNavigate();
+
   const lyricSongs = useSongStore(selectLyricSongs);
   const fetchLyricSongs = useSongStore(selectFetchLyricSongs);
 
   useEffect(() => {
     fetchLyricSongs(params?.name, params?.id);
   }, []);
+
+  // handling APIs is not ready
+  if (!lyricSongs) {
+    return (
+      <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+    );
+  } else {
+    const newPremaUrlSplit = lyricSongs.perma_url.replace('https://www.jiosaavn.com', '');
+    const splitPremaUrl = newPremaUrlSplit.split('/');
+    const splitLocationName = window.location.pathname.split('/');
+    if (splitPremaUrl[3] !== splitLocationName[3]) {
+      return (
+        <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+      );
+    }
+  }
 
   return (
     <>

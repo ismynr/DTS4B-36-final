@@ -16,7 +16,9 @@ import {
   TableCell,
   Container,
   Typography,
-  TableContainer
+  TableContainer,
+  LinearProgress,
+  Link
 } from '@mui/material';
 // components
 import Scrollbar from '../components/scrollbar';
@@ -74,19 +76,13 @@ function applySortFilter(array, comparator, query) {
 export default function UserPage() {
 
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - SONGLIST.length) : 0;
-
   const filteredUsers = applySortFilter(SONGLIST, getComparator(order, orderBy), filterName);
-
   const isNotFound = !filteredUsers.length && !!filterName;
 
   let params = useParams();
@@ -94,12 +90,38 @@ export default function UserPage() {
   const featuredSongs = useSongStore(selectFeaturedSongs);
   const fetchFeaturedSongs = useSongStore(selectFetchFeaturedSongs);
 
+  let numberSongs = 0;
+
   useEffect(() => {
     fetchFeaturedSongs(params?.name, params?.id);
-    console.log(featuredSongs);
   }, []);
 
-  let numberSongs = 0;
+  // handling APIs is not ready
+  if (featuredSongs.length < 1) {
+    console.log(`ga adadata`);
+    return (
+      <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+    );
+  } else {
+    console.log(featuredSongs);
+    if (featuredSongs.error) {
+      console.log(featuredSongs.error);
+      return (
+        <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+      );
+    } else {
+      console.log('gaeror');
+      const newPremaUrlSplit = featuredSongs.perma_url.replace('https://www.jiosaavn.com', '');
+      const splitPremaUrl = newPremaUrlSplit.split('/');
+      const splitLocationName = window.location.pathname.split('/');
+      if (splitPremaUrl[3] !== splitLocationName[3]) {
+        return (
+          <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+        );
+      }
+    }
+    
+  }
 
   return (
     <>
@@ -149,14 +171,15 @@ export default function UserPage() {
                       <TableCell align="left">{song}</TableCell>
                       <TableCell align="left">{duration}</TableCell>
                       <TableCell align="left">
-                      <Button to={newPremaUrl} size="medium" variant="text" component={RouterLink}>
-                        Lyric
-                      </Button>
+                        <Button to={newPremaUrl} size="medium" variant="text" component={RouterLink}>
+                          Lyric
+                        </Button>
                       </TableCell>
                       <TableCell align="left">
-                        <Button to={'/'+media_url} size="medium" variant="text" component={RouterLink}>
+                        {/* <Button to={'/'+media_url} onClick={handleRoute} size="medium" variant="text" component={RouterLink}>
                           mp3
-                        </Button>
+                        </Button> */}
+                        <a href={media_url} target="blank">mp3</a>
                       </TableCell>
                       </TableRow>
                     );

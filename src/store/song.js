@@ -4,8 +4,8 @@ import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
 const initialLyrics = "";
-const initialFeaturedSongs = {};
-const initialSearchSongs = [];
+const initialFeaturedSongs = [];
+const initialSearchSongs = "";
 const BASE_URL = 'https://jio-saavn-api-unof.herokuapp.com/';
 
 const useSongStore = create(
@@ -16,7 +16,6 @@ const useSongStore = create(
       searchSongs: initialSearchSongs,
       fetchFeaturedSongs: async (name, id) => {
         const { data: axiosData } = await axios.get(`${BASE_URL}result/?query=https://www.jiosaavn.com/featured/${name}/${id}`);
-        console.log(axiosData);
 
         set(produce((state) => {
           state.featuredSongs = axiosData;

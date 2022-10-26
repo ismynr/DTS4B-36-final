@@ -3,9 +3,9 @@ import produce from 'immer';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
-const initialChart = [];
-const initialNewRelease = [];
-const initialFeaturedPlaylists = [];
+const initialChart = "";
+const initialNewRelease = "";
+const initialFeaturedPlaylists = "";
 const BASE_URL = 'https://jio-saavn-api-unof.herokuapp.com/';
 
 const useFeaturedStore = create(
