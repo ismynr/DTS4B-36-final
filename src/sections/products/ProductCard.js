@@ -21,20 +21,21 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, link } = product;
+  const { title, image, perma_url, type } = product;
+  const newUrl = perma_url.replace('https://www.jiosaavn.com', '');
 
   return (
-    <CardActionArea component={RouterLink} to={link}> 
+    <CardActionArea component={RouterLink} to={newUrl}> 
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         
-        <StyledProductImg alt={name} src={cover} />
+        <StyledProductImg alt={title} src={image} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link color="inherit" underline="hover">
           <Typography variant="subtitle2" noWrap>
-            {name}
+            {title}
           </Typography>
         </Link>
       </Stack>

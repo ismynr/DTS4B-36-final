@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { useState } from 'react';
@@ -15,7 +16,7 @@ import {
   TableCell,
   Container,
   Typography,
-  TableContainer,
+  TableContainer
 } from '@mui/material';
 // components
 import Scrollbar from '../components/scrollbar';
@@ -23,6 +24,11 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead } from '../sections/user';
 // mock
 import SONGLIST from '../_mock/songList';
+import { useParams } from 'react-router-dom';
+import useSongStore, { 
+  selectFeaturedSongs, 
+  selectFetchFeaturedSongs,
+} from '../store/song';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +36,8 @@ const TABLE_HEAD = [
   { id: 'number', label: '#', alignRight: false },
   { id: 'songTitle', label: 'Title', alignRight: false },
   { id: 'songDuration', label: 'Duration', alignRight: false },
+  { id: 'lyric', label: 'Lyric', alignRight: false },
+  { id: 'media_url', label: 'Url', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -81,30 +89,40 @@ export default function UserPage() {
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
+  let params = useParams();
+
+  const featuredSongs = useSongStore(selectFeaturedSongs);
+  const fetchFeaturedSongs = useSongStore(selectFetchFeaturedSongs);
+
+  useEffect(() => {
+    fetchFeaturedSongs(params?.name, params?.id);
+    console.log(featuredSongs);
+  }, []);
+
+  let numberSongs = 0;
 
   return (
     <>
       <Helmet>
-        <title> Payung Teduh - Ruang Tunggu </title>
+        <title> {featuredSongs.listname} </title>
       </Helmet>
 
       <Container>
-
 
     <Card sx={{ m: 2, display: 'flex' }}>
     <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image="/assets/images/products/product_1.jpg"
+        image={featuredSongs.image}
         alt="album cover"
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'  }}>
         <CardContent sx={{ flex: '1 0 auto',}}>
           <Typography component="div" variant="h5">
-          Payung Teduh - Ruang Tunggu
+          {featuredSongs.listname}
           </Typography>
           <Typography component="div" variant="h7">
-          2017
+          {featuredSongs.firstnam}
           </Typography>
         </CardContent>
       </Box>
@@ -119,14 +137,27 @@ export default function UserPage() {
                   rowCount={SONGLIST.length}
                 />
                 <TableBody>
-                  {filteredUsers.slice().map((row) => {
-                    const { number, id, songTitle, songDuration, } = row;
+                  
+                  {featuredSongs.songs.slice().map((row) => {
+                    const { music_id, song, duration, media_url, perma_url } = row;
+                    const newPremaUrl = perma_url.replace('https://www.jiosaavn.com', '');
+                    numberSongs++;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1}>
-                      <TableCell align="left">{number}</TableCell>
-                      <TableCell align="left">{songTitle}</TableCell>
-                      <TableCell align="left">{'3:15'}</TableCell>
+                      <TableRow hover key={music_id} tabIndex={-1}>
+                      <TableCell align="left">{numberSongs}</TableCell>
+                      <TableCell align="left">{song}</TableCell>
+                      <TableCell align="left">{duration}</TableCell>
+                      <TableCell align="left">
+                      <Button to={newPremaUrl} size="medium" variant="text" component={RouterLink}>
+                        Lyric
+                      </Button>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Button to={'/'+media_url} size="medium" variant="text" component={RouterLink}>
+                          mp3
+                        </Button>
+                      </TableCell>
                       </TableRow>
                     );
                   })}
@@ -142,8 +173,8 @@ export default function UserPage() {
         </Card>
         <Box component="span" sx={{ display: 'flex', p: 2, border: '2', justifyContent:'right'}}>
         <Button to="/" size="medium" variant="text" component={RouterLink}>
-              Back
-            </Button>
+          Back
+        </Button>
     </Box>
       </Container>
     </>

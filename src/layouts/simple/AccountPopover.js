@@ -5,11 +5,26 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../_mock/account';
+// firebase
+import { getAuth, onAuthStateChanged , signOut } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import { auth } from '../../config/firebase';
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+
+  const user = getAuth().currentUser;
+  let email = user ? user.email : account.email;
+  let displayName = user ? (user.displayName ?? account.displayName) : account.displayName;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      email = user.email;
+      displayName = user.displayName;
+    }
+  });
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -19,9 +34,16 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
-    let path = `/login`; 
-    navigate(path);
   };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -66,16 +88,16 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </Popover>

@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { sample } from 'lodash';
+import useFeaturedStore, { selectFeatured, selectFetchFeatured } from '../store/featured';
 
 // ----------------------------------------------------------------------
 

@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { useState } from 'react';
@@ -18,14 +19,28 @@ import {
   Typography,
   TableContainer,
 } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import useSongStore, { 
+  selectLyricSongs,
+  selectFetchLyricSongs,
+} from '../store/song';
+import { useNavigate} from "react-router-dom";
 // components
 
 export default function UserPage() {
+  let params = useParams();
+  let navigate = useNavigate();
+  const lyricSongs = useSongStore(selectLyricSongs);
+  const fetchLyricSongs = useSongStore(selectFetchLyricSongs);
+
+  useEffect(() => {
+    fetchLyricSongs(params?.name, params?.id);
+  }, []);
 
   return (
     <>
       <Helmet>
-        <title> Payung Teduh - Ruang Tunggu </title>
+        <title> {lyricSongs.song} </title>
       </Helmet>
 
       <Container>
@@ -35,19 +50,19 @@ export default function UserPage() {
     <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image="/assets/images/products/product_1.jpg"
+        image={lyricSongs.image}
         alt="album cover"
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <CardContent sx={{ flex: '1 0 auto',}}>
             <Typography component="div" variant="h5">
-            akad
+              {lyricSongs.song}
             </Typography>
             <Typography component="div" variant="h6">
-            4:18
+              {lyricSongs.year}
             </Typography>
             <Typography component="div" variant="h7">
-                Payung Teduh - Ruang Tunggu
+              {lyricSongs.singers}
             </Typography>
           
         </CardContent>
@@ -56,57 +71,13 @@ export default function UserPage() {
     </Card>
         <Card>
             <Box sx={{ m:1, }}>
-                <Text variant="h7">
-                    {`
-                    Betapa bahagianya hatiku
-                    Saat ku duduk berdua denganmu
-                    Berjalan bersamamu
-                    Menarilah denganku
-
-                    Namun, bila hari ini adalah yang terakhir
-                    Namun, ku tetap bahagia
-                    Selalu kusyukuri
-                    Begitulah adanya
-
-                    Namun, bila kau ingin sendiri
-                    Cepat, cepatlah sampaikan kepadaku
-                    Agar ku tak berharap
-                    Dan buat kau bersedih
-
-                    Bila nanti saatnya t'lah tiba
-                    Ku ingin kau menjadi istriku
-                    Berjalan bersamamu dalam terik dan hujan
-                    Berlarian ke sana, kemari, dan tertawa
-
-                    Namun, bila saat berpisah t'lah tiba
-                    Izinkan ku menjaga dirimu
-                    Berdua menikmati pelukan di ujung waktu
-                    Sudilah kau temani diriku
-
-                    Namun, bila kau ingin sendiri
-                    Cepat, cepatlah sampaikan kepadaku
-                    Agar ku tak berharap
-                    Dan buat kau bersedih
-                    
-                    Bila nanti saatnya t'lah tiba
-                    Ku ingin kau menjadi istriku
-                    Berjalan bersamamu dalam terik dan hujan
-                    Berlarian ke sana, kemari, dan tertawa
-
-                    Namun, bila saat berpisah t'lah tiba
-                    Izinkan ku menjaga dirimu
-                    Berdua menikmati pelukan di ujung waktu
-                    Sudilah kau temani diriku
-                    
-                    Sudilah kau menjadi temanku
-                    Sudilah kau menjadi
-                    Istriku
-                    `}
+                <Text variant="h7" >
+                  <div style={{margin: "3em 3em 3em 3em"}} dangerouslySetInnerHTML={{ __html: lyricSongs.lyrics }} />
                 </Text>
             </Box>
         </Card>
         <Box component="span" sx={{ display: 'flex', p: 2, border: '2', justifyContent:'right'}}>
-        <Button to="/1" size="medium" variant="text" component={RouterLink}>
+        <Button onClick={() => navigate(-1)} size="medium" variant="text" component={RouterLink}>
               Back
             </Button>
     </Box>

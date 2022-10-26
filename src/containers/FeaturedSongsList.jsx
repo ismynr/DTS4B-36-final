@@ -6,8 +6,6 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 
-
-
 import useSongStore, { selectFeaturedSongs, selectFetchFeaturedSongs } from '../store/song';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -19,10 +17,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const FeaturedSongsList = () => {
-const featuredSongs = useSongStore(selectFeaturedSongs);
+  const featuredSongs = useSongStore(selectFeaturedSongs);
   const fetchFeaturedSongs = useSongStore(selectFetchFeaturedSongs);
 
   useEffect(() => {
+    console.log(featuredSongs);
     if (featuredSongs.length == 0) {
         fetchFeaturedSongs();
     }

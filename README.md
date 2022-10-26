@@ -18,6 +18,15 @@ Contoh: `dts4a-01-final`
 
 Branch dapat sesuai dengan kebutuhan dan kesepakatan bersama dalam pair, namun hasil akhirnya harus di merge ke branch `main` dan di push ke Github. Pastikan hasil akhir kode sudah ter-push!
 
+## APIs
+UNOFFICIAL jiosaavn.com
+- Github: https://github.com/ismynr/JioSaavnAPI
+- URL: https://jio-saavn-api-unof.herokuapp.com
+
+## Video GIF
+
+## Link App
+
 ## Task
 ### Desain MUI
 - [x] Login
@@ -25,11 +34,12 @@ Branch dapat sesuai dengan kebutuhan dan kesepakatan bersama dalam pair, namun h
 - [x] Home / List Musics
 - [x] Detail Musics (Lyric)
 - [x] Form Searcing
+- [x] Routing
 
 ### Fetch Data & Action
 - [x] Fetch data API (Zustand)
-- [x] Routing
-- [ ] Action Login
-- [ ] Action Register
-- [ ] Action Logout
-- [ ] Action Searching
+- [x] Action Login (Firebase)
+- [x] Action Register (Firebase)
+- [x] Action Logout (Firebase)
+- [x] Action Searching
+- [ ] Deployment
