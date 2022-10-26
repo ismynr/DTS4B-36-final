@@ -68,39 +68,48 @@ export default function UserPage() {
     <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image={lyricSongs.image ?? 'https://i.pinimg.com/originals/16/bf/a1/16bfa1d4494404173e8d25ae0e108884.jpg'}
+        image={lyricSongs.image.includes('https') ? lyricSongs.image : 'https://i.pinimg.com/originals/f1/91/a4/f191a4786289ade562884722ef784cff.jpg'}
         alt="album cover"
       />
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        <CardContent sx={{ flex: '1 0 auto',}}>
-            <Typography component="div" variant="h5">
+      <Box sx={{ display: 'block', flexDirection: 'column', alignItems: 'center'}}>
+        <CardContent sx={{ flex: '1 0 auto'}}>
+            <h2>
               {lyricSongs.song}
-            </Typography>
-            <Typography component="div" variant="h6">
+            </h2>
+            <br/>
+            <h4>
               {lyricSongs.year}
-            </Typography>
-            <Typography component="div" variant="h7">
+            </h4>
+            <h5>
               {lyricSongs.singers}
-            </Typography>
-          
+            </h5>
         </CardContent>
       </Box>
       
     </Card>
-        <Card>
-            <Box sx={{ m:5, }}>
-                <Text variant="h7" >
-                  {lyricSongs.lyrics 
-                  ? <div dangerouslySetInnerHTML={{ __html: lyricSongs.lyrics }} />
-                  :  'There is no Lyrics'}
-                  
-                </Text>
-            </Box>
-        </Card>
-        <Box component="span" sx={{ display: 'flex', p: 2, border: '2', justifyContent:'right'}}>
-        <Button onClick={() => navigate(-1)} size="medium" variant="text" component={RouterLink}>
-              Back
-            </Button>
+    <Box component="span" sx={{ display: 'flex', p: 2, justifyContent:'center'}}>
+      <video controls
+        src={lyricSongs.media_url}
+        height="50"
+        width="100%">
+          Sorry, browser not support <a href={lyricSongs.media_url}>download</a>
+      </video>
+    </Box>
+    <Card>
+    
+        <Box sx={{ m:5, }}>
+            <Text variant="h7" >
+              {lyricSongs.lyrics 
+              ? <div dangerouslySetInnerHTML={{ __html: lyricSongs.lyrics }} />
+              :  'There is no Lyrics'}
+              
+            </Text>
+        </Box>
+    </Card>
+    <Box component="span" sx={{ display: 'flex', p: 2, border: '2', justifyContent:'right'}}>
+    <Button onClick={() => navigate(-1)} size="medium" variant="text" component={RouterLink}>
+          Back
+        </Button>
     </Box>
       </Container>
     </>

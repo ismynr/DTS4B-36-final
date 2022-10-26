@@ -42,7 +42,7 @@ const TABLE_HEAD = [
   { id: 'songTitle', label: 'Title', alignRight: false },
   { id: 'songDuration', label: 'Duration)', alignRight: false },
   { id: 'lyric', label: 'Lyric', alignRight: false },
-  { id: 'media_url', label: 'Url', alignRight: false },
+  { id: 'media_url', label: 'Play', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -138,20 +138,21 @@ export default function UserPage() {
     <CardMedia
         component="img"
         sx={{ width: 151 }}
-        image={featuredSongs.image ?? 'https://i.pinimg.com/originals/16/bf/a1/16bfa1d4494404173e8d25ae0e108884.jpg'}
+        image={featuredSongs.image.includes('https') ? featuredSongs.image : 'https://i.pinimg.com/originals/f1/91/a4/f191a4786289ade562884722ef784cff.jpg'}
         alt="album cover"
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'  }}>
         <CardContent sx={{ flex: '1 0 auto',}}>
-          <Typography component="div" variant="h5">
-          {featuredSongs.listname ?? featuredSongs.name}
-          </Typography>
-          <Typography component="div" variant="h7">
-          {featuredSongs.firstname ?? featuredSongs.year}
-          </Typography>
-          <Typography component="div" variant="h7">
-          {featuredSongs.firstname ? 'Playlist':'Album'}
-          </Typography>
+            <h2>
+              {featuredSongs.listname ?? featuredSongs.name}
+            </h2>
+            <br/>
+            <h4>
+              {featuredSongs.firstname ?? featuredSongs.year}
+            </h4>
+            <h5>
+              {featuredSongs.firstname ? 'Playlist':'Album'}
+            </h5>
         </CardContent>
       </Box>
       
@@ -191,10 +192,12 @@ export default function UserPage() {
                         </Button>
                       </TableCell>
                       <TableCell align="left">
-                        {/* <Button to={'/'+media_url} onClick={handleRoute} size="medium" variant="text" component={RouterLink}>
-                          mp3
-                        </Button> */}
-                        <a href={media_url} target="blank">mp3</a>
+                        <video controls
+                          src={media_url}
+                          height="30"
+                          width="400">
+                            Sorry, browser not support <a href={media_url}>download</a>
+                        </video>
                       </TableCell>
                       </TableRow>
                     );
