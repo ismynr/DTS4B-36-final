@@ -24,6 +24,7 @@ UNOFFICIAL jiosaavn.com
 - URL: https://jio-saavn-api-unof.herokuapp.com
 
 ## Video GIF
+![Dokumentasi](https://github.com/ismynr/DTS4B-36-final/blob/main/dokumentasi.gif)
 
 ## Link App
 https://musicsme.netlify.app/
